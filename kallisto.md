@@ -320,3 +320,16 @@ module load nixpkgs/16.09  gcc/7.3.0 blast+/2.9.0
 makeblastdb -in ../dmw_trinity_assembly_all_batches.Trinity.fasta -dbtype nucl -out dmw_trinity_assembly_all_batches.Trinity.fasta_blastable
 blastn -query dmw_mRNA_NM_001114842.1_ex4_only.fasta -db dmw_trinity_assembly_all_batches.Trinity.fasta_blastable -out dmw_ex4only_to_dmw_assemb.out
 ```
+
+dmw is:
+```
+TRINITY_DN10661_c0_g1_i1, TRINITY_DN10661_c0_g1_i3, TRINITY_DN10661_c0_g1_i4, TRINITY_DN10661_c0_g1_i5
+```
+dmrt1L is:
+```
+TRINITY_DN27580_c0_g1_i1, TRINITY_DN27580_c0_g1_i2
+```
+dmrt1S is:
+```
+TRINITY_DN82767_c0_g1_i1, TRINITY_DN79847_c0_g1_i1, TRINITY_DN79847_c0_g1_i2
+```
