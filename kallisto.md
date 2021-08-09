@@ -314,3 +314,9 @@ CATTATACCTTATAATACATGAGTGATACAGATTTTTATCTCAGAACAATGTCCAACTCAGAAACATTATCATTTAATAG
 
 # Checking specific transcripts
 I'd like to figure out which transcript(s) correspond to dmw, dmrt1S, and dmrt1L.  I can use blast to query the assembly with these seqs to get the transcript ID, and then I can use R to print out the counts in each individual.
+
+```
+module load nixpkgs/16.09  gcc/7.3.0 blast+/2.9.0
+makeblastdb -in dmw_trinity_assembly_all_batches.Trinity.fasta -dbtype nucl -out dmw_trinity_assembly_all_batches.Trinity.fasta_blastable
+blastn -query dmw_mRNA_NM_001114842.1_ex4_only.fasta -db dmw_trinity_assembly_all_batches.Trinity.fasta_blastable -out dmw_ex4only_to_dmw_assemb.out
+```
