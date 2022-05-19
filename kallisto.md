@@ -41,6 +41,8 @@ done
 ```
 
 # Combine counts from multiple individuals
+
+This script is hard coded to combine the count data from each sample into one output file.
 ```
 #!/bin/sh
 #SBATCH --job-name=kallisto
