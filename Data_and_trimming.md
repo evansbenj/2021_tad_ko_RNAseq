@@ -5,7 +5,7 @@ Protocol for RNAseq: Clontech/Takara SMARTer v4 cDNA conversion kit followed by 
 # Path
 
 ```
-/home/ben/projects/rrg-ben/ben/2021_tad_RNAseq/
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/
 ```
 
 # trimming
