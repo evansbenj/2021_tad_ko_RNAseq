@@ -10,6 +10,8 @@
 ```
 
 # Generate counts
+
+Thus sbatch script will read in all R1 fastq files in a directory and generate individual (sample-specific) counts for each fastq pair.
 ```
 #!/bin/sh
 #SBATCH --job-name=kallisto
