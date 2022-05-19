@@ -116,7 +116,7 @@ ts/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_8_S14_kallisto_boot_
 out/abundance.tsv
 ```
 # Analysis of differential expression (for dmw only)
-I assembled the dmw transcriptome from 12 individuals - 6 wt female and 6 dmw ko female.  I used this script to analyze differentially expressed genes:
+I assembled the dmw transcriptome from 12 individuals - 6 wt female and 6 dmw ko female.  I used this script to analyze differentially expressed genes locally:
 ```
 if (!requireNamespace('edgeR', quietly = T)) {
   install.packages('edgeR')
