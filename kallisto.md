@@ -116,7 +116,11 @@ ts/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_8_S14_kallisto_boot_
 out/abundance.tsv
 ```
 # Analysis of differential expression (for dmw only)
-I assembled the dmw transcriptome from 12 individuals - 6 wt female and 6 dmw ko female.  I used this script to analyze differentially expressed genes locally:
+I assembled the dmw transcriptome from 12 individuals - 6 wt female and 6 dmw ko female. 
+
+I think for now it is best to work with the XL transcriptome from xenbase...
+
+I used this script to analyze differentially expressed genes locally:
 ```
 if (!requireNamespace('edgeR', quietly = T)) {
   install.packages('edgeR')
@@ -144,10 +148,6 @@ BiocManager::install("org.Xl.eg.db")
 
 BiocManager::install("limma")
 
-
-
-
-
 library(limma)
 library(edgeR)
 library(tximport)
@@ -160,8 +160,8 @@ require('gridExtra')
 library("org.Xl.eg.db")
 library(PCAtools)
 
-setwd("/Users/Shared/Previously Relocated Items/Security/projects/2021_KO_tad_RNAseq/Kallisto_EdgeR")
-dir <- "/Users/Shared/Previously Relocated Items/Security/projects/2021_KO_tad_RNAseq/Kallisto_EdgeR"
+setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2021_KO_tad_RNAseq/Kallisto_EdgeR")
+dir <- "/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2021_KO_tad_RNAseq/Kallisto_EdgeR"
 list.files(dir)
 
 # load count data (from Kalisto)
@@ -207,7 +207,8 @@ sexez <- relevel(sexez, ref="F")
 grouping <- factor(paste(batch,genotypez, sep=".")) # ignore sex because all dmw samples are female
 
 # Create DGEList object
-d0 <- DGEList(counts, group = grouping)
+#d0 <- DGEList(counts, group = grouping)
+d0 <- DGEList(counts, group = genotypez)
 
 # get rid of rows where there is less than an average of one read per individual
 # in the analysis
@@ -222,7 +223,8 @@ dim(d0$counts)
 # many rows with low expression were eliminated
 
 # design matrix
-design<-model.matrix(~0+batch+genotypez, data=d0$samples) # last coefficient = difference between genotypez
+#design<-model.matrix(~0+batch+genotypez, data=d0$samples) # last coefficient = difference between genotypez
+design<-model.matrix(~0+genotypez, data=d0$samples) # last coefficient = difference between genotypez
 design
 
 # TMM normalization is applied to this dataset to account for compositional difference between
@@ -241,7 +243,7 @@ plot(project.pca$x, type="n")
 points(project.pca$x, col=genotypez, pch=16, cex=1)
 #points(project.pca$x, col=sexez, pch=16, cex=1)
 points(project.pca$x, col=batch, pch=16, cex=1) +
-theme(legend.position="top")
+  theme(legend.position="top")
 var_explained <- project.pca$sdev^2/sum(project.pca $sdev^2)
 
 # OK let's compare wt F to dmw_ko_F
@@ -266,14 +268,14 @@ project.pca$x %>%
 # pca mostly overlaps...
 
 # estimate dispersion
-d0 <- estimateDisp(d0, design, robust=TRUE)
+d0 <- estimateDisp(d0, robust=TRUE)
 d0$common.dispersion
 plotBCV(d0)
 
 # fit the model
-fit <- glmQLFit(d0, design, robust=TRUE)
+fit <- glmQLFit(d0, robust=TRUE)
 plotQLDisp(fit)
-qlf <- glmQLFTest(fit, coef=3)
+qlf <- glmQLFTest(fit, coef=2)
 topTags(qlf)
 #TRINITY_DN15246_c0_g1_i10  11.745462 3.9729331 75.11365 6.771376e-08 0.01586036
 #TRINITY_DN5299_c0_g1_i4    11.292092 2.9022767 61.46581 1.120121e-07 0.01586036
@@ -300,7 +302,35 @@ summary(decideTests(qlf))
 
 FDR <- p.adjust(qlf$table$PValue, method="BH")
 sum(FDR < 0.05)
-# [1] 9
+# [1] 8
+
+
+library("HTSFilter")
+# filter low expressed genes 
+filtData <- HTSFilter(d0)$filteredData
+dgeTestFilt <- exactTest(filtData)
+summary(decideTests(dgeTestFilt))
+# dmwKO-WT
+# Down          1
+# NotSig    23642
+# Up            4
+
+topTags(dgeTestFilt)
+
+
+# estimate dispersion
+filtData <- estimateDisp(filtData, robust=TRUE)
+filtData$common.dispersion
+plotBCV(d0)
+
+
+# fit the model
+fit_filt <- glmQLFit(filtData, robust=TRUE)
+plotQLDisp(fit_filt)
+qlf_filt <- glmQLFTest(fit_filt, coef=2)
+topTags(qlf_filt)
+summary(decideTests(qlf_filt))
+
 ```
 
 Relative to wt, 7 are upregulated in dmw ko and 2 are dowregulated.  I used grep to extract the seqs from the assembly and I blasted these against XL in xenbase and against everythign in NCBI. I put notes after each entry.
