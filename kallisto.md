@@ -377,6 +377,15 @@ dmw_22_wt_f
 
 
 # Checking specific transcripts
+If I have a transcript name but need the sequence for blasting, I can get it like this:
+```
+grep -A 1 'transcriptname' transcriptome.fa
+```
+or if the transcriptome is compressed this:
+```
+zcat xlaevisMRNA.fasta.gz | grep -A 1 'D10455' 
+```
+
 I'd like to figure out which transcript(s) correspond to dmw, dmrt1S, and dmrt1L.  I can use blast to query the assembly with these seqs to get the transcript ID, and then I can use R to print out the counts in each individual.
 
 ```
