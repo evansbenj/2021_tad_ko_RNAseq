@@ -2,11 +2,13 @@
 
 ```
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/ben_scripts
 ```
 
 # Transcriptome with index
 ```
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_transcriptome
+
 ```
 
 # Generate counts
