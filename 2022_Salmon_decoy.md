@@ -19,7 +19,8 @@ Salmon:
 ```
 module load StdEnv/2020  gcc/9.3.0  openmpi/4.0.3 salmon/1.7.0
 ```
-# Make decoy list (following directions from here: https://combine-lab.github.io/alevin-tutorial/2019/selective-alignment/)
+# Make decoy list 
+I'm following directions from here: https://combine-lab.github.io/alevin-tutorial/2019/selective-alignment/
 ```
 grep "^>" ../../2021_XL_v10_refgenome/XENLA_10.1_genome.fa | cut -d " " -f 1 > decoys.txt
 sed -i.bak -e 's/>//g' decoys.txt
