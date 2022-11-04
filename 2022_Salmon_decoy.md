@@ -9,3 +9,8 @@ Another is bedtools:
 ```
 module load StdEnv/2020 bedtools/2.30.0
 ```
+
+Salmon:
+```
+module load StdEnv/2020  gcc/9.3.0  openmpi/4.0.3 salmon/1.7.0
+```
