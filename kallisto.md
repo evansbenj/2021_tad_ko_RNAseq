@@ -46,18 +46,17 @@ Thus sbatch script will read in all R1 fastq files in a directory and generate i
 #SBATCH --account=def-ben
 
 # run by passing an argument like this
-# sbatch ./2021_kallisto_withBoot.sh ../raw_data/dmrt1
+# sbatch ./2021_kallisto_abundance_dmw_transcriptome.sh  ../raw_data/dmrt1
 
 module load kallisto/0.46.1
 
 #  Always use for-loop, prefix glob, check if exists file.
 for file in $1/*R1_trim_001.fastq.gz ; do         # Use ./* ... NEVER bare *
-dmw_35_S36_L001_R2_trim_001.fastq.gz
+
     if [ -e "$file" ] ; then   # Check whether file exists.
-      kallisto quant -b 100 -i /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNA
-seq/XL_transcriptome/xlaevisMRNA.idx -o ${file::-26}_kallisto_boot_out ${file::-
-26}_L001_R1_trim_001.fastq.gz ${file::-26}_L001_R2_trim_001.fastq.gz ${file::-26
-}_L002_R1_trim_001.fastq.gz ${file::-26}_L002_R2_trim_001.fastq.gz
+      kallisto quant -b 100 -i /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_v10_transcriptome/XENLA_10.1_GCF_XBmod
+els.transcripts.fa.idx -o ${file::-26}_kallisto_boot_out ${file::-26}_L001_R1_trim_001.fastq.gz ${file::-26}_L001_R2_trim_001
+.fastq.gz ${file::-26}_L002_R1_trim_001.fastq.gz ${file::-26}_L002_R2_trim_001.fastq.gz
   fi
 done 
 ```
