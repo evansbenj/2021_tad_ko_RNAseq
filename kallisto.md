@@ -61,7 +61,7 @@ els.transcripts.fa.idx -o ${file::-26}_kallisto_boot_out ${file::-26}_L001_R1_tr
 done 
 ```
 
-# Combine counts from multiple individuals
+# Combine counts from multiple individuals (dmw)
 
 This script is hard coded to combine the count data from each sample into one output file.
 ```
@@ -78,63 +78,23 @@ This script is hard coded to combine the count data from each sample into one ou
 module load r/4.0.5
 module load trinity/2.11.0
 
-# run by passing an argument like this
-# sbatch 2021_Trinity_combine_kallisto.sh
+# run like this
+# sbatch 2021_Trinity_combine_kallisto_dmw_only.sh
 
-/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/ben_scripts/trinityrnaseq-v
-2.12.0/util/abundance_estimates_to_matrix.pl --est_method kallisto --out_prefix 
-dmw_ccdc_dmrt1L  --gene_trans_map none --name_sample_by_basedir /home/ben/projec
-ts/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_14_S29_kallisto_boot_out/a
-bundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/d
-mw_16_S30_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL
-_ko_tad_RNAseq/raw_data/dmw/dmw_17_S31_kallisto_boot_out/abundance.tsv /home/ben
-/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_20_S32_kallisto_boo
-t_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_dat
-a/dmw/dmw_26_S33_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/
-2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_28_S34_kallisto_boot_out/abundance.tsv /h
-ome/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_29_S35_kalli
-sto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/
-raw_data/dmw/dmw_35_S36_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-b
-en/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_12_S3_kallisto_boot_out/abundanc
-e.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_14
-_S4_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_ta
-d_RNAseq/raw_data/ccdc/ccdc_25_S5_kallisto_boot_out/abundance.tsv /home/ben/proj
-ects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_30_S6_kallisto_boot_ou
-t/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/cc
-dc/ccdc_32_S7_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/202
-1_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_34_S8_kallisto_boot_out/abundance.tsv /hom
-e/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_35_S9_kallis
-to_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/r
-aw_data/ccdc/ccdc_36_S10_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-
-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_3_S1_kallisto_boot_out/abundanc
-e.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/ccdc/ccdc_42
-_S11_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_t
-ad_RNAseq/raw_data/ccdc/ccdc_9_S2_kallisto_boot_out/abundance.tsv /home/ben/proj
-ects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_11_S15_kallisto_bo
-ot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_da
-ta/dmrt1L/dmrt1L_17_S16_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-b
-en/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_19_S17_kallisto_boot_out/abu
-ndance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/
-dmrt1L_24_S18_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/202
-1_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_25_S19_kallisto_boot_out/abundance.tsv
- /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_26_
-S20_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_ta
-d_RNAseq/raw_data/dmrt1L/dmrt1L_27_S21_kallisto_boot_out/abundance.tsv /home/ben
-/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_30_S22_kallis
-to_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/r
-aw_data/dmrt1L/dmrt1L_35_S23_kallisto_boot_out/abundance.tsv /home/ben/projects/
-rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_41_S24_kallisto_boot_ou
-t/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dm
-rt1L/dmrt1L_43_S25_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/be
-n/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_50_S26_kallisto_boot_out/abundanc
-e.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1
-L_55_S27_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_
-ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_59_S28_kallisto_boot_out/abundance.tsv /hom
-e/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_6_S12_ka
-llisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAs
-eq/raw_data/dmrt1L/dmrt1L_7_S13_kallisto_boot_out/abundance.tsv /home/ben/projec
-ts/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmrt1L/dmrt1L_8_S14_kallisto_boot_
-out/abundance.tsv
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/ben_scripts/trinityrnaseq-v2.12.0/util/abundance_estimates_to_matrix.pl 
+--est_method kallisto --out_prefix dmw_only  --gene_trans_map none --name_sample_by_basedir /home/ben/projects/rrg-ben/ben/20
+21_XL_ko_tad_RNAseq/raw_data/dmw/dmw_14_S29_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNA
+seq/raw_data/dmw/dmw_16_S30_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw
+/dmw_26_S33_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_28_S34_kall
+isto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_29_S35_kallisto_boot_out/ab
+undance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data/dmw/dmw_35_S36_kallisto_boot_out/abundance.tsv /hom
+e/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data_2nd_run/dmw/dmw9_S1_kallisto_boot_out/abundance.tsv /home/ben/proje
+cts/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data_2nd_run/dmw/dmw12_S2_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-be
+n/ben/2021_XL_ko_tad_RNAseq/raw_data_2nd_run/dmw/dmw15_S3_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021
+_XL_ko_tad_RNAseq/raw_data/dmw/dmw_17_S31_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAse
+q/raw_data/dmw/dmw_20_S32_kallisto_boot_out/abundance.tsv /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/raw_data_2nd_r
+un/dmw/dmw22_S4_kallisto_boot_out/abundance.tsv
+
 ```
 # Analysis of differential expression (for dmw only)
 I assembled the dmw transcriptome from 12 individuals - 6 wt female and 6 dmw ko female. 
