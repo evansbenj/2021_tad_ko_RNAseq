@@ -5,9 +5,10 @@
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/ben_scripts
 ```
 
-# Transcriptome with index
+# Transcriptome with index (XL_transcripts v10.1)
 ```
-/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_transcriptome
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa.idx
 
 ```
 
