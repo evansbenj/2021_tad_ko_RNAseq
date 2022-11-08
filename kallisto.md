@@ -9,7 +9,26 @@
 ```
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq/XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa.idx
+```
 
+# Index the reference transcriptome
+```
+#!/bin/sh
+#SBATCH --job-name=kallisto
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --time=4:00:00
+#SBATCH --mem=32gb
+#SBATCH --output=kallisto.%J.out
+#SBATCH --error=kallisto.%J.err
+#SBATCH --account=def-ben
+
+# run by passing an argument like this
+# sbatch ./2021_kallisto_index_transcriptome_assembly.sh path_to_transcriptome_assembly/transcriptomeAssembly.fasta
+
+module load kallisto/0.46.1
+
+kallisto index -i ${1}.idx ${1}
 ```
 
 # Generate counts
