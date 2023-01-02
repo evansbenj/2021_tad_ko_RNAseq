@@ -20,33 +20,53 @@ makeblastdb -in gencode.v42.transcripts.fa -dbtype nucl -out gencode.v42.transcr
 ```
 
 # Query seqs
-Get the exact header for each file. First at a bar `|` to the end of each seq to prevent extra matches:
-`emacs -nw id.file`
+Make a header for each file. 
+
+First add a bar `|` to the end of each line of a text file containing unique identifers to prevent extra matches:
+`sed -i 's/$/\|/' ccdc_kallisto_edgeR.file`
 
 ```
-XBXL10_1g43753|
-XBXL10_1g26238|
-XBXL10_1g569|
+XBmRNA21528|
+XBmRNA44681|
+XBmRNA48999|
+XBmRNA4722|
+XBmRNA50613|
+XBmRNA51371|
+XBmRNA54222|
+XBmRNA54223|
+XBmRNA56258|
+XBmRNA66942|
+XBmRNA68936|
+XBmRNA68976|
+XBmRNA69753|
+XBmRNA74882|
+XBmRNA77377|
+XBmRNA82371|
+XBmRNA82372|
+XBmRNA82995|
+XBmRNA9690|
+XBmRNA596|
 ```
 Now use this to grep the headers:
 ```
-for i in `cat ./id.file `; do grep -i $i XENLA_10.1_GCF_XBmodels.transcripts.fa >> ID_in_sequence_file;done
+for i in `cat ./ccdc_kallisto_edgeR.file `; do grep -i $i XENLA_10.1_GCF_XBmodels.transcripts.fa >> ccdc_kallisto_edgeR_sequence_file;done
 ```
 Now remove the greater than sign:
 ```
-sed -i 's/>//g' ID_in_sequence_file
+sed -i 's/>//g' ccdc_kallisto_edgeR_sequence_file
 ```
 Now use seqtk to extract the fasta entries
 ```
-seqtk subseq XENLA_10.1_GCF_XBmodels.transcripts.fa ID_in_sequence_file > output.fasta
+seqtk subseq XENLA_10.1_GCF_XBmodels.transcripts.fa ccdc_kallisto_edgeR_sequence_file > ccdc_kallisto_edgeR_sequence_file_output.fasta
 ```
 
 # Get best alignment of blast results (based on bit score)
 I am using dc-megablast, which is for somewhat similar sequences (here I am comparing human and frog protein coding).  I should also consider using `-task blastn` which allows for even more divergent matches.  The default is `-task megablast` which is for highly similar seqs.
 ```
-blastn -task dc-megablast -query scanw_kallisto_edgeR_de.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > scanw_kallisto_edgeR_de_to_human_best_single_hits.blastn
+blastn -task dc-megablast -query ccdc_kallisto_edgeR_sequence_file_output.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn
 ```
 # Extract acronyms from best blast hit
 ```
-cat scanw_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\|
+cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\|
 ```
+use this list for the GO analysis here:  http://geneontology.org/
