@@ -20,7 +20,7 @@ makeblastdb -in gencode.v42.transcripts.fa -dbtype nucl -out gencode.v42.transcr
 ```
 
 # Query seqs
-Get the exact header for each file. First at a bar to the end of each seq to prevent extra matches:
+Get the exact header for each file. First at a bar `|` to the end of each seq to prevent extra matches:
 `emacs -nw id.file`
 
 ```
@@ -32,18 +32,13 @@ Now use this to grep the headers:
 ```
 for i in `cat ./id.file `; do grep -i $i XENLA_10.1_GCF_XBmodels.transcripts.fa >> ID_in_sequence_file;done
 ```
-
-
-
-
-
-According to this link: https://edwards.sdsu.edu/research/perl-one-liner-to-extract-sequences-by-their-identifer-from-a-fasta-file/ Get fasta entries like this:
-
+Now remove the greater than sign:
 ```
-perl -ne 'if(/^>(\S+)/){$c=grep{/^$1$/}qw(42732422)}print if $c' AO245_newtrim_scaffolds.fa
+sed -i 's/>//g' ID_in_sequence_file
 ```
-or with a file:
+Now use seqtk to extract the fasta entries
 ```
-perl -ne 'if(/^>(\S+)/){$c=$i{$1}}$c?print:chomp;$i{$_}=1 if @ARGV' ids.file fasta.file
+seqtk subseq XENLA_10.1_GCF_XBmodels.transcripts.fa ID_in_sequence_file > output.fasta
 ```
-awk -v seq="42732422 10004 289064 42567259-,...,42597465-" -v RS='>' '$1 == seq {print RS $0}' AO245_newtrim_scaffolds.fa
+
+
