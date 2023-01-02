@@ -57,6 +57,7 @@ sed -i 's/>//g' ccdc_kallisto_edgeR_sequence_file
 ```
 Now use seqtk to extract the fasta entries
 ```
+module load StdEnv/2020 seqtk/1.3
 seqtk subseq XENLA_10.1_GCF_XBmodels.transcripts.fa ccdc_kallisto_edgeR_sequence_file > ccdc_kallisto_edgeR_sequence_file_output.fasta
 ```
 
