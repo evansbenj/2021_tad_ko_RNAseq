@@ -41,4 +41,8 @@ Now use seqtk to extract the fasta entries
 seqtk subseq XENLA_10.1_GCF_XBmodels.transcripts.fa ID_in_sequence_file > output.fasta
 ```
 
-
+# Get best alignment of blast results (based on bit score)
+I am using dc-megablast, which is for somewhat similar sequences (here I am comparing human and frog protein coding).  I should also consider using `-task blastn` which allows for even more divergent matches.  The default is `-task megablast` which is for highly similar seqs.
+```
+blastn -task dc-megablast -query scanw_kallisto_edgeR_de.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > best_single_hits.blastn
+```
