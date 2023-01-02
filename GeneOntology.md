@@ -71,4 +71,11 @@ blastn -task dc-megablast -query ccdc_kallisto_edgeR_sequence_file_output.fasta 
 ```
 cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\|
 ```
+
+# Check if how many orthologs of the queries have orthologs
+```
+wc -l ccdc_kallisto_edgeR.file
+cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\| | wc -l
+```
+
 use this list for the GO analysis here:  http://geneontology.org/
