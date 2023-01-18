@@ -67,6 +67,10 @@ I am using dc-megablast, which is for somewhat similar sequences (here I am comp
 module load nixpkgs/16.09 gcc/7.3.0 blast+/2.10.1 
 blastn -task dc-megablast -query ccdc_kallisto_edgeR_sequence_file_output.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn
 ```
+# extract acronyms of successful queries
+```
+cat dmw_kallisto_deseq2_de_to_human_best_single_hits.blastn| cut -f1 | cut -f3 -d\|
+```
 # Extract acronyms from best blast hit
 ```
 cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\|
