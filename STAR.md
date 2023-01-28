@@ -45,3 +45,21 @@ STAR --genomeDir /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/ \
 --outSAMattributes Standard \
 --readFilesCommand zcat
 ```
+
+# Count
+First use samtools sort to sort all the bam files
+
+featureCounts package  
+http://subread.sourceforge.net/  
+
+```
+module load StdEnv/2020 gcc/9.3.0 star/2.7.9a samtools subread/2.0.3
+
+# must use -s 0 because the data are unstranded
+
+featureCounts -T 4 -s 0 \
+  -a ~/XXX.gtf \
+  -o ~/output_featurecounts.txt \
+  ~/unix_lesson/rnaseq/results/STAR/*bam
+  
+```
