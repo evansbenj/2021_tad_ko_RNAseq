@@ -7,9 +7,9 @@ To begin to deal with this, I am going to blast each differentially expressed Xe
 # DE genes
 I am writing all the DE genes to csv files.
 
-Cat them:
+Cat them and skip first line
 ```
-cat All_STAR_DE_DeSeq2.csv | cut -d '"' -f2 > All_STAR_DE_DeSeq2.names
+awk 'FNR>1' MF_STAR_ccdc_DE_DeSeq2.csv MF_STAR_dmrt1L_DE_DeSeq2.csv MF_STAR_dmrt1S_DE_DeSeq2.csv wtko_STAR_ccdc_DE_DeSeq2.csv wtko_STAR_dmw_DE_DeSeq2.csv wtko_STAR_scan_DE_DeSeq2.csv > All_STAR_DE_DeSeq2.csv
 ```
 
 # Human transcriptome
