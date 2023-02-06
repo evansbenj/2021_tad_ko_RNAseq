@@ -4,6 +4,14 @@ The main problem with doing an analysis of differential expression in Xenopus is
 
 To begin to deal with this, I am going to blast each differentially expressed Xenopus transcript against a human transcriptome and identify the top hit.  I will use the acronym of these genes to perform a gene ontology analysis in humanns using this tool: http://geneontology.org/
 
+# DE genes
+I am writing all the DE genes to csv files.
+
+Cat them:
+```
+cat All_STAR_DE_DeSeq2.csv | cut -d '"' -f2 > All_STAR_DE_DeSeq2.names
+```
+
 # Human transcriptome
 In this directory:
 ```
