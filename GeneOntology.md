@@ -33,6 +33,8 @@ Make a header for each file.
 First add a bar `|` to the end of each line of a text file containing unique identifers to prevent extra matches:
 `sed -i 's/$/\|/' ccdc_kallisto_edgeR.file`
 
+Also get rid of rows with only a '|' manually using emacs
+
 ```
 XBmRNA21528|
 XBmRNA44681|
