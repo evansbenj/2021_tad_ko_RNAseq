@@ -30,10 +30,8 @@ makeblastdb -in gencode.v42.transcripts.fa -dbtype nucl -out gencode.v42.transcr
 # Query seqs
 Make a header for each file. 
 
-First add a bar `|` to the end of each line of a text file containing unique identifers to prevent extra matches:
+First add a bar `|` to the end of each line of a text file containing unique identifers to prevent extra matches (must be done on graham because does not work locally):
 `sed -i 's/$/\|/' ccdc_kallisto_edgeR.file`
-
-Also get rid of rows with only a '|' manually using emacs
 
 ```
 XBmRNA21528|
