@@ -59,6 +59,9 @@ Now use this to grep the headers:
 ```
 for i in `cat ./ccdc_kallisto_edgeR.file `; do grep -i $i XENLA_10.1_GCF_XBmodels.transcripts.fa >> ccdc_kallisto_edgeR_sequence_file;done
 ```
+```
+for i in `cat ./All_STAR_DE_DeSeq2.names `; do grep -i $i ../XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa >> All_STAR_DE_DeSeq2.full_names;done
+```
 Now remove the greater than sign:
 ```
 sed -i 's/>//g' ccdc_kallisto_edgeR_sequence_file
