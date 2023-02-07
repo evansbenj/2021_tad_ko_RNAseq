@@ -11,6 +11,10 @@ Cat them and skip first line
 ```
 awk 'FNR>1' MF_STAR_ccdc_DE_DeSeq2.csv MF_STAR_dmrt1L_DE_DeSeq2.csv MF_STAR_dmrt1S_DE_DeSeq2.csv wtko_STAR_ccdc_DE_DeSeq2.csv wtko_STAR_dmw_DE_DeSeq2.csv wtko_STAR_scan_DE_DeSeq2.csv > All_STAR_DE_DeSeq2.csv
 ```
+get names only
+```
+cut -f1 -d "," All_STAR_DE_edgeR.csv | cut -f2 -d "\"" > All_STAR_DE_edgeR.names
+```
 
 # Human transcriptome
 In this directory:
