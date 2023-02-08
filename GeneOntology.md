@@ -15,6 +15,10 @@ get names only
 ```
 cut -f1 -d "," All_STAR_DE_edgeR.csv | cut -f2 -d "\"" > All_STAR_DE_edgeR.names
 ```
+or
+```
+cut -f1 -d "," All_Kallisto_EdgeR.csv | cut -f2 -d "\"" | cut -f2 -d '|' > All_Kallisto_EdgeR.names
+```
 
 # Human transcriptome
 In this directory:
