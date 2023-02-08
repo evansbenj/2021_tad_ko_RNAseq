@@ -102,3 +102,73 @@ cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 
 ```
 
 use this list for the GO analysis here:  http://geneontology.org/
+
+# Colate results:
+```perl
+#!/usr/bin/perl
+use warnings;
+use strict;
+use List::MoreUtils qw(uniq);
+
+# This program reads in three files and colates the results
+# the first one is a list of DE genes for a particular analsis
+# the order of the first list will be the same as the order of the output
+# the second file has the fasta headers for each of these genes;
+# we need to harvest the xenbase gene acronym from this one
+# the third one has blastn output; we need to harvest human 
+# gene acronyms from this one when available
+
+# Colate_for_gene_ontology.pl All_STAR_DE_DeSeq2.full_names All_STAR_DE_DeSeq2_to_human_best_single_hits.blastn All_STAR_DE_DeSeq2.out
+
+my $input1 = $ARGV[0];
+my $input2 = $ARGV[1];
+my $outputfile = $ARGV[2];
+
+unless (open DATAINPUT1, $input1) {
+	print "Can not find the input file.\n";
+	exit;
+}
+unless (open DATAINPUT2, $input2) {
+	print "Can not find the input file.\n";
+	exit;
+}
+unless (open(OUTFILE, ">$outputfile"))  {
+	print "I can\'t write to $outputfile\n";
+	exit;
+}
+
+my @temp;
+my @temp1;
+my %gene_hash;
+my $counter=0;
+# first load up the gene IDs and xenbase acronyms
+while ( my $line = <DATAINPUT1>) {
+	@temp = split(" ",$line);
+	@temp1 = split(/\|/,$temp[0]);
+	$gene_hash{$counter}[0] = $temp1[1];
+	$gene_hash{$counter}[1] = $temp[1];
+	$gene_hash{$counter}[2] = "";
+	$counter+=1;
+}	
+close DATAINPUT1;
+# now get the acronym of the human ortholog if present
+my $y;
+my @temp2;
+while ( my $line = <DATAINPUT2>) {
+	@temp = split(" ",$line);
+	@temp1 = split(/\|/,$temp[0]);	
+	@temp2 = split(/\|/,$temp[1]);	
+ 	for ($y = 0 ; $y < $counter ; $y++ ) {
+		if($temp1[1] eq $gene_hash{$y}[0]){
+	 		$gene_hash{$y}[2] = $temp2[5];
+	 	}
+ 	}
+}	
+
+for ($y = 0 ; $y < $counter ; $y++ ) {
+	print  $gene_hash{$y}[0],"\t",$gene_hash{$y}[1],"\t",$gene_hash{$y}[2],"\n";
+	print OUTFILE $gene_hash{$y}[0],"\t",$gene_hash{$y}[1],"\t",$gene_hash{$y}[2],"\n";
+}		
+close DATAINPUT2;
+close OUTFILE;
+```
