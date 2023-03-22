@@ -13,8 +13,8 @@ library(PCAtools)
 library("HTSFilter")
 library(tidyverse)
 library(writexl)
-setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2022_Kallisto_EdgeR_done")
-dir <- "/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2022_Kallisto_EdgeR_done"
+setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2023_Kallisto_EdgeR_done")
+dir <- "/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2023_Kallisto_EdgeR_done"
 list.files(dir)
 
 # load MF count data (from Kalisto)
@@ -114,7 +114,7 @@ write_xlsx(rsquare, "./MF_rsquare_dmrt1L_Kallisto_edgeR.xls")
 
 
 
-# dmrt1S ----
+# MF dmrt1S ----
 colnames(MFcounts)
 new_MFcounts <- MFcounts[,c(6:8,20:22) ]
 new_MFsamples <-as.data.frame(MFsamples[c(6:8,20:22), ]);new_MFsamples
@@ -698,10 +698,41 @@ write_xlsx(rsquare, "./MF_rsquare_ccdc_Kallisto_edgeR.xls")
 # get rownames of sexrelated transcripts
 SL_rownames <- row.names(MFcounts[grepl("gnl\\|XBXL10_1g34625\\||gnl\\|XBXL10_1g37811\\||gnl\\|XBXL10_1g10668\\||gnl\\|XBXL10_1g7999\\||gnl\\|XBXL10_1g24241\\||gnl\\|XBXL10_1g26060\\||gnl\\|XBXL10_1g24554\\||gnl\\|XBXL10_1g26280\\||gnl\\|XBXL10_1g27265\\||gnl\\|XBXL10_1g29076\\||gnl\\|XBXL10_1g30057\\||gnl\\|XBXL10_1g32392\\||gnl\\|XBXL10_1g31301\\||gnl\\|XBXL10_1g33473\\||gnl\\|XBXL10_1g3211\\||gnl\\|XBXL10_1g5748\\||gnl\\|XBXL10_1g35876\\||gnl\\|XBXL10_1g37293\\||gnl\\|XBXL10_1g6566\\||gnl\\|XBXL10_1g8966\\||gnl\\|XBXL10_1g7278\\||gnl\\|XBXL10_1g10089\\||gnl\\|XBXL10_1g23152\\||gnl\\|XBXL10_1g25243\\||gnl\\|XBXL10_1g2070\\||gnl\\|XBXL10_1g4848\\||gnl\\|XBXL10_1g8430\\||gnl\\|XBXL10_1g11002\\||gnl\\|XBXL10_1g30252\\||gnl\\|XBXL10_1g32546\\||gnl\\|XBXL10_1g605\\||gnl\\|XBXL10_1g3639\\||gnl\\|XBXL10_1g37486\\||gnl\\|XBXL10_1g39526\\||gnl\\|XBXL10_1g42722\\||gnl\\|XBXL10_1g35158\\||gnl\\|XBXL10_1g38013\\||gnl\\|XBXL10_1g38893\\||gnl\\|XBXL10_1g42158\\||gnl\\|XBXL10_1g39443\\||gnl\\|XBXL10_1g42662\\||gnl\\|XBXL10_1g41173\\||gnl\\|XBXL10_1g43880\\||gnl\\|XBXL10_1g19698\\||gnl\\|XBXL10_1g22028\\||gnl\\|XBXL10_1g815\\||gnl\\|XBXL10_1g3800\\||gnl\\|XBXL10_1g8007\\||gnl\\|XBXL10_1g10675\\||gnl\\|XBXL10_1g2154\\||gnl\\|XBXL10_1g4928\\||gnl\\|XBXL10_1g27310\\||gnl\\|XBXL10_1g29128\\||gnl\\|XBXL10_1g40425\\||gnl\\|XBXL10_1g43291\\||gnl\\|XBXL10_1g8118\\||gnl\\|XBXL10_1g10760\\||gnl\\|XBXL10_1g8117\\||gnl\\|XBXL10_1g10758\\||gnl\\|XBXL10_1g1634\\||gnl\\|XBXL10_1g4460\\||gnl\\|XBXL10_1g22534\\||gnl\\|XBXL10_1g25047\\||gnl\\|XBXL10_1g22535\\||gnl\\|XBXL10_1g25046\\||gnl\\|XBXL10_1g13810\\||gnl\\|XBXL10_1g15286\\||gnl\\|XBXL10_1g30377\\||gnl\\|XBXL10_1g13205\\||gnl\\|XBXL10_1g15724\\||gnl\\|XBXL10_1g6054\\||gnl\\|XBXL10_1g9274\\||gnl\\|XBXL10_1g29226\\||gnl\\|XBXL10_1g34871\\|", rownames(MFcounts)), ])
 
+# the two functions below were developed by Ian Dworkin and colleagues
+# https://github.com/DworkinLab/Trypoxylus_RNAseq/blob/master/analysis_scripts/re_analysis_scripts_jan_2018.Rmd
+
+# This function calculates the Euclidean Distances (the L2 norm) 
+# so we can use unit vectors in the estimation of the vector 
+# correlation.
+# These functions follow the logic of Kuruvilla et al 2002, 
+# and were adapted from Pitchers et al 2013
+PD <- function(x) { 
+  sqrt(t(x)%*%x)}
+
+#this function gives the vector correlation and angle, 
+# and vector magnitude ratio, alpha, between two vectors
+# alpha of 1 means that the length of vector 2 is the same 
+# as the length as vector 1. 
+# lower than one means that it is smaller, greater than 
+# 1 means that vector 2 is larger
+ang.vec.alph <- function(vec1, vec2) {
+  vec1 <- vec1 - mean(vec1)
+  vec2 <- vec2 - mean(vec2)
+  vec.cor <- abs((t(vec1) %*% vec2)/(PD(vec1)*PD(vec2)))
+  vec.angle <- acos(vec.cor)*(180/pi)
+  vec.alpha <- PD(vec1)/PD(vec2) 
+  vec.ED <- PD(vec2-vec1) #Subtract vector one from vector two and then calculate PD for Euclidean Distance. 
+  return(c(vector.cor=vec.cor, vec.angle=vec.angle, vec.alpha=vec.alpha, vector.ED=vec.ED))} 
+
+
+
+
 # dmw permutations ----
 
 # MF_ccdc vs dmw
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -723,6 +754,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_ccdc_trim[rownames,'logFC'],
                          wtko_dmw_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_dmw_trim[,'logFC'], # ko:wt first
+             MF_ccdc_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -746,9 +786,23 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.02097902
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_dmw_trim[SL_rownames,'logFC'],
+           sex_related_MF_ccdc_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.2957043
+
+
 
 # MF_dmrt1L vs dmw
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -770,6 +824,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1L_trim[rownames,'logFC'],
                          wtko_dmw_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_dmw_trim[,'logFC'], # ko:wt first
+             MF_dmrt1L_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -793,8 +856,22 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.4885115
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_dmw_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1L_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.1168831
+
+
 # MF_dmrt1S vs dmw
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -816,6 +893,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1S_trim[rownames,'logFC'],
                          wtko_dmw_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_dmw_trim[,'logFC'], # ko:wt first
+             MF_dmrt1S_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -837,13 +923,26 @@ correlations[1001] <- cor(sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
                           method = "pearson", use="pairwise")
 print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
-# [1] 0.1238761
+# [1] 0.003996004
+
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_dmw_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.1968032
 
 
 # scan permutations ----
 
 # MF_ccdc vs scan
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -865,6 +964,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_ccdc_trim[rownames,'logFC'],
                          wtko_scan_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_scan_trim[,'logFC'], # ko:wt first
+             MF_ccdc_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -888,9 +996,22 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.7562438
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_scan_trim[SL_rownames,'logFC'],
+           sex_related_MF_ccdc_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.01998002
+
 
 # MF_dmrt1L vs scan
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -912,6 +1033,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1L_trim[rownames,'logFC'],
                          wtko_scan_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_scan_trim[,'logFC'], # ko:wt first
+             MF_dmrt1L_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -935,8 +1065,21 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.4365634
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_scan_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1L_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0
+
 # MF_dmrt1S vs scan
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -958,6 +1101,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1S_trim[rownames,'logFC'],
                          wtko_scan_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_scan_trim[,'logFC'], # ko:wt first
+             MF_dmrt1S_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -979,13 +1131,26 @@ correlations[1001] <- cor(sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
                           method = "pearson", use="pairwise")
 print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
-# [1] 0.3486513
+# [1] 0.6993007
+
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_scan_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.02697303
 
 
 # ccdc permutations ----
 
 # MF_ccdc vs ccdc
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -1007,6 +1172,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_ccdc_trim[rownames,'logFC'],
                          wtko_ccdc_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_ccdc_trim[,'logFC'], # ko:wt first
+             MF_ccdc_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -1030,9 +1204,23 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.7792208
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_ccdc_trim[SL_rownames,'logFC'],
+           sex_related_MF_ccdc_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.1388611
+
+
 
 # MF_dmrt1L vs ccdc
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -1054,6 +1242,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1L_trim[rownames,'logFC'],
                          wtko_ccdc_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_ccdc_trim[,'logFC'], # ko:wt first
+             MF_dmrt1L_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -1077,8 +1274,22 @@ print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
 # [1] 0.7852148
 
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_ccdc_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1L_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.1038961
+
+
 # MF_dmrt1S vs ccdc
 correlations <- c()
+magnitudes <- c()
+
 # Use a for loop
 for (x in 1:1000) {
   indexes <- sample.int(dim(MFcounts)[1], 74, replace = F);indexes
@@ -1100,6 +1311,15 @@ for (x in 1:1000) {
   correlations[x] <- cor(MF_dmrt1S_trim[rownames,'logFC'],
                          wtko_ccdc_trim[rownames,'logFC'], 
                          method = "pearson", use="pairwise")
+  # calculate and add the ratio of vector lengths to a vector
+  a <- merge(wtko_ccdc_trim[,'logFC'], # ko:wt first
+             MF_dmrt1S_trim[,'logFC'], # reference M:F second
+             by = 'row.names', 
+             incomparables = NA)
+  b <- a[complete.cases(a), ];b
+  magnitudes[x] <-ang.vec.alph(b$x,b$y)[3] # this is the ratio of the magnitudes of each vector
+  # the reference (wildtype M:F is the denominator)
+  # if this is >1 then the ko:wt has a bigger effect
 }
 # now figure out where the observed ranks within the correlations vector
 # remove outliers from MF
@@ -1121,6 +1341,219 @@ correlations[1001] <- cor(sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
                           method = "pearson", use="pairwise")
 print("pvalue: "); 1-rank(correlations)[1001]/1001
 # [1] "pvalue: "
-# [1] 0.3426573
+# [1] 0.9140859
+
+# now figure out where the observed magnitude ratio is within the permutation magntiude vector
+a <- merge(sex_related_wtko_ccdc_trim[SL_rownames,'logFC'],
+           sex_related_MF_dmrt1S_trim[SL_rownames,'logFC'],
+           by = 'row.names', 
+           incomparables = NA)
+b <- a[complete.cases(a), ];b
+magnitudes[1001] <- ang.vec.alph(b$x,b$y)[3]
+
+print("Magnitude pvalue: "); 1-rank(magnitudes)[1001]/1001
+# [1] 0.2537463
+```
+# Plotting
+
+```R
+library(edgeR)
+library(tximport)
+library('edgeR')
+library('rhdf5')
+library('readxl')
+library('ggplot2')
+library(grid)
+require('gridExtra')
+library("org.Xl.eg.db")
+library(PCAtools)
+library("HTSFilter")
+library(tidyverse)
+library(purrr)
+library(writexl)
+
+setwd("/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2023_Kallisto_EdgeR_done")
+dir <- "/Users/Shared/Previously\ Relocated\ Items/Security/projects/2022_Supergene/2022_KO_tad_RNAseq/2022_EdgeR_and_DeSeq2/2022_Kallisto_EdgeR_done"
+list.files(dir)
+
+
+f_files<- list.files(".", pattern = "Kallisto_edgeR_unfiltered.csv", full.names = T);f_files
+# import into a list
+myfiles = lapply(f_files, read.delim, sep = ",")
+
+# rename the columns so they are sensible
+cnames <- data.frame(MF_ccdc = c("gene","MF_ccdc_logFC","MF_ccdc_logCPM","MF_ccdc_PValue"),
+                     MF_dmrt1L = c("gene","MF_dmrt1L_logFC","MF_dmrt1L_logCPM","MF_dmrt1L_PValue"),
+                     MF_dmrt1S = c("gene","MF_dmrt1S_logFC","MF_dmrt1S_logCPM","MF_dmrt1S_PValue"),
+                     wtko_ccdc = c("gene","wtko_ccdc_logFC","wtko_ccdc_logCPM","wtko_ccdc_PValue"),
+                     wtko_dmw = c("gene","wtko_dmw_logFC","wtko_dmw_logCPM","wtko_dmw_PValue"),
+                     wtko_scan = c("gene","wtko_scan_logFC","wtko_scan_logCPM","wtko_scan_PValue"))
+colnames(myfiles[[1]]) <- c("gene","MF_ccdc_logFC","MF_ccdc_logCPM","MF_ccdc_PValue")
+colnames(myfiles[[2]]) <- c("gene","MF_dmrt1L_logFC","MF_dmrt1L_logCPM","MF_dmrt1L_PValue")
+colnames(myfiles[[3]]) <- c("gene","MF_dmrt1S_logFC","MF_dmrt1S_logCPM","MF_dmrt1S_PValue")
+colnames(myfiles[[4]]) <- c("gene","wtko_ccdc_logFC","wtko_ccdc_logCPM","wtko_ccdc_PValue")
+colnames(myfiles[[5]]) <- c("gene","wtko_dmw_logFC","wtko_dmw_logCPM","wtko_dmw_PValue")
+colnames(myfiles[[6]]) <- c("gene","wtko_scan_logFC","wtko_scan_logCPM","wtko_scan_PValue")
+
+library(plyr)
+alldata<-join_all(myfiles, by = "gene", type = "full", match = "all")
+library(ggplot2)
+library(GGally)
+
+# get rid of outliers
+# https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/
+boxplot(alldata$MF_ccdc_logFC, plot=FALSE)$out
+# these outliers are the first quartile - 1.5 the interquartile range
+# and the third quartile plus 1.5 the interquartile range
+#MF_ccdc
+outliers <- boxplot(alldata$MF_ccdc_logFC, plot=FALSE)$out
+MF_ccdc_logFC_trim<-alldata[,c(1,2)]
+if(any(outliers)) {
+  MF_ccdc_logFC_trim<- MF_ccdc_logFC_trim[-which(MF_ccdc_logFC_trim$MF_ccdc_logFC %in% outliers),]
+}
+#MF_dmrt1L
+outliers <- boxplot(alldata$MF_dmrt1L_logFC, plot=FALSE)$out
+MF_dmrt1L_logFC_trim<-alldata[,c(1,5)]
+if(any(outliers)) {
+  MF_dmrt1L_logFC_trim<- MF_dmrt1L_logFC_trim[-which(MF_dmrt1L_logFC_trim$MF_dmrt1L_logFC %in% outliers),]
+}
+#MF_dmrt1S
+outliers <- boxplot(alldata$MF_dmrt1S_logFC, plot=FALSE)$out
+MF_dmrt1S_logFC_trim<-alldata[,c(1,8)]
+if(any(outliers)) {
+  MF_dmrt1S_logFC_trim<- MF_dmrt1S_logFC_trim[-which(MF_dmrt1S_logFC_trim$MF_dmrt1S_logFC %in% outliers),]
+}
+#wtko_dmw
+outliers <- boxplot(alldata$wtko_dmw_logFC, plot=FALSE)$out
+wtko_dmw_logFC_trim<- alldata[,c(1,14)]
+if(any(outliers)) {
+  wtko_dmw_logFC_trim<- wtko_dmw_logFC_trim[-which(wtko_dmw_logFC_trim$wtko_dmw_logFC %in% outliers),]
+}
+#wtko_scan
+outliers <- boxplot(alldata$wtko_scan_logFC, plot=FALSE)$out
+wtko_scan_logFC_trim<- alldata[,c(1,17)]
+if(any(outliers)) {
+  wtko_scan_logFC_trim<- wtko_scan_logFC_trim[-which(wtko_scan_logFC_trim$wtko_scan_logFC %in% outliers),]
+}
+#wtko_ccdc
+outliers <- boxplot(alldata$wtko_ccdc_logFC, plot=FALSE)$out
+wtko_ccdc_logFC_trim<- alldata[,c(1,11)]
+if(any(outliers)) {
+  wtko_ccdc_logFC_trim<- wtko_ccdc_logFC_trim[-which(wtko_ccdc_logFC_trim$wtko_ccdc_logFC %in% outliers),]
+}
+
+# combine no outlier files
+# make a list of df
+df_list <- list(MF_ccdc_logFC_trim, MF_dmrt1L_logFC_trim, MF_dmrt1S_logFC_trim, wtko_dmw_logFC_trim, wtko_scan_logFC_trim, wtko_ccdc_logFC_trim)
+#merge all data frames in list
+alldata_no_outliers <- df_list %>% reduce(full_join, by='gene')
+
+colnames(alldata_no_outliers) <- c("gene","MF_1","MF_2",
+                                   "MF_3","dmw","scan",
+                                   "ccdc")
+library(ggplot2)
+
+my_fn <- function(data, mapping, ...){
+  p <- ggplot(data = data, mapping = mapping) + 
+    geom_point() + 
+  #  geom_smooth(method=loess, fill="red", color="red", ...) +
+    geom_smooth(method=lm, fill="blue", color="blue", ...)
+  p
+}
+
+my_fn2 <- function(data, mapping, method="p", use="pairwise", ...){
+  
+  # grab data
+  x <- eval_data_col(data, mapping$x)
+  y <- eval_data_col(data, mapping$y)
+  
+  # calculate correlation
+  corr <- cor(x, y, method=method, use=use)
+  
+  # calculate colour based on correlation value
+  # Here I have set a correlation of minus one to blue, 
+  # zero to white, and one to red 
+  # Change this to suit: possibly extend to add as an argument of `my_fn`
+  colFn <- colorRampPalette(c("blue", "white", "red"), interpolate ='spline')
+  fill <- colFn(100)[findInterval(corr, seq(-1, 1, length=100))]
+  
+  ggally_cor(data = data, mapping = mapping, ...) + 
+    theme_void() +
+    theme(panel.background = element_rect(fill=fill))
+}
+
+my_custom_smooth <- function(data, mapping, ...) {
+  p <- ggplot(data = data, mapping = mapping) +
+    geom_point(color = I("blue")) + 
+    geom_smooth(method = "lm", fill="blue", color="blue", ...)
+  
+  lmModel <- eval(substitute(lm(y ~ x, data = data), mapping))
+  fs <- summary(lmModel)$fstatistic
+  pValue <- pf(fs[1], fs[2], fs[3], lower.tail = FALSE)
+  
+  if (pValue < 0.05) {
+    p <- p + theme(
+      panel.border = element_rect(
+        color = "red", 
+        size = 3,
+        linetype = "solid",
+        fill = "transparent"
+      )
+    )
+  }
+  
+  p
+}
+
+p_ <- GGally::print_if_interactive
+g<-ggpairs(alldata_no_outliers[,c(2:7)], 
+        #upper = list(continuous = "density", combo = "box_no_facet"),
+        #upper = list(continuous = wrap(ggally_cor, size = 2)), 
+        upper = list(continuous = my_fn2),
+        lower = list(continuous = my_fn)) +
+        #lower = list(continuous = my_custom_smooth)) +
+  #theme_bw() +
+  theme(strip.background = element_rect(
+      color="white", fill="white", size=1.5, linetype="solid")) +
+  theme(axis.line = element_line(color='black'),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank())
+
+box1_2 <- ggally_text("\nr = 0.098\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box1_3 <- ggally_text("\nr = -0.114\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box1_4 <- ggally_text("\nr = 0.366*\np = 0.021\n",geom_text = ggplot2::aes(size = 6), color = I("red"))
+box1_5 <- ggally_text("\nr = -0.111\np = 0.756\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box1_6 <- ggally_text("\nr = 0.372*\np = 0.779\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box2_3 <- ggally_text("\nr = 0.096\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box2_4 <- ggally_text("\nr = 0.130\np = 0.489\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box2_5 <- ggally_text("\nr = -0.028\np = 0.437\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box2_6 <- ggally_text("\nr = -0.167\np = 0.785\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box3_4 <- ggally_text("\nr = 0.365*\np = 0.004\n",geom_text = ggplot2::aes(size = 6), color = I("red"))
+box3_5 <- ggally_text("\nr = -0.131\np = 0.699\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box3_6 <- ggally_text("\nr = -0.403*\np = 0.914\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box4_5 <- ggally_text("\nr = 0.041\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box4_6 <- ggally_text("\nr = 0.064\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+box5_6 <- ggally_text("\nr = -0.145\n\n",geom_text = ggplot2::aes(size = 6), color = I("black"))
+g[1, 2] <- box1_2
+g[1, 3] <- box1_3
+g[1, 4] <- box1_4
+g[1, 5] <- box1_5
+g[1, 6] <- box1_6
+g[2, 3] <- box2_3
+g[2, 4] <- box2_4
+g[2, 5] <- box2_5
+g[2, 6] <- box2_6
+g[3, 4] <- box3_4
+g[3, 5] <- box3_5
+g[3, 6] <- box3_6
+g[4, 5] <- box4_5
+g[4, 6] <- box4_6
+g[5, 6] <- box5_6
+# small function to display plots only if it's interactive
+
+p_(g)
+
+ggsave(file="Kallisto_edgeR_sexrelated_pairwise_unfiltered.pdf", g, width=10, height=4)
 
 ```
