@@ -1,3 +1,8 @@
+# Path
+```
+/home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq
+```
+
 # Index genome
 
 ```
