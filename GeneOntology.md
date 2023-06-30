@@ -88,12 +88,14 @@ blastn -task dc-megablast -query ccdc_kallisto_edgeR_sequence_file_output.fasta 
 ```
 # extract acronyms of successful queries
 ```
-cat dmw_kallisto_deseq2_de_to_human_best_single_hits.blastn| cut -f1 | cut -f3 -d\|
+cat dmw_kallisto_deseq2_de_to_human_best_single_hits.blastn| cut -f1 | cut -f2 -d\|
 ```
 # Extract acronyms from best blast hit
 ```
 cat ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn | cut -f2 | cut -f6 -d\|
 ```
+
+Put these in excel and sort them using this formula: `=MATCH(B2,A2:A185,0)`
 
 # Check if how many orthologs of the queries have orthologs
 ```
