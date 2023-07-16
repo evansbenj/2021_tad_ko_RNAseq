@@ -78,11 +78,11 @@ module load StdEnv/2020 gcc/9.3.0 star/2.7.9a samtools subread/2.0.3
 # use --countReadPairs to count read pairs instead of reads
 # use -C to prevent counting of chimeric reads
 # -T is the number of threads
-featureCounts -T 4 -s 0 -p --countReadPairs -C -g ID \
-  -a /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/XLv9.2_xenbase_annotations.gff \
+featureCounts -T 4 -s 0 -p --countReadPairs -C \
+  -a /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/XENLA_10.1_GCF_XBmodels.gtf \
   -o ${2} \
   ${1}
-  
+
 ```
 
 
