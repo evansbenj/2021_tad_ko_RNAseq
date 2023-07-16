@@ -20,9 +20,9 @@ module load StdEnv/2020 star/2.7.9a
 
 STAR --runThreadN 6 \
 --runMode genomeGenerate \
---genomeDir /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/ \
---genomeFastaFiles /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/XENLA_9.2_genome.fa \
---sjdbGTFfile /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/XLv9.2_xenbase_annotations.gff \
+--genomeDir /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/ \
+--genomeFastaFiles /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/XENLA_10.1_genome.fa \
+--sjdbGTFfile /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/XENLA_10.1_GCF_XBmodels.gtf \
 --sjdbOverhang 99 \
 --limitGenomeGenerateRAM=124544990592
 ```
@@ -41,7 +41,7 @@ STAR --runThreadN 6 \
 
 module load StdEnv/2020 star/2.7.9a
 
-STAR --genomeDir /home/ben/projects/rrg-ben/ben/2020_XL_v9.2_refgenome/ \
+STAR --genomeDir /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/ \
 --runThreadN 6 \
 --readFilesIn ${1} ${2} \
 --outFileNamePrefix ${3} \
