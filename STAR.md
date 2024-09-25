@@ -40,7 +40,7 @@ cd jade_scripts
 #SBATCH --mem=256gb
 #SBATCH --output=STAR_index.%J.out
 #SBATCH --error=STAR_index.%J.err
-#SBATCH --account=def-ben
+#SBATCH --account=rrg-ben
 
 module load StdEnv/2023 star/2.7.11b
 
@@ -63,7 +63,7 @@ STAR --runThreadN 6 \
 #SBATCH --mem=64gb
 #SBATCH --output=STAR_map.%J.out
 #SBATCH --error=STAR_map.%J.err
-#SBATCH --account=def-ben
+#SBATCH --account=rrg-ben
 
 module load StdEnv/2023 star/2.7.11b
 
@@ -93,7 +93,7 @@ https://subread.sourceforge.net/SubreadUsersGuide.pdf
 #SBATCH --mem=4Gb
 #SBATCH --output=STAR_count.%J.out
 #SBATCH --error=STAR_count.%J.err
-#SBATCH --account=def-ben
+#SBATCH --account=rrg-ben
 
 # sbatch 2022_STAR_count.sh inputbam output_counts
 
