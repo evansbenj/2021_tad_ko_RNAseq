@@ -42,7 +42,7 @@ cd jade_scripts
 #SBATCH --error=STAR_index.%J.err
 #SBATCH --account=def-ben
 
-module load StdEnv/2020 star/2.7.9a
+module load StdEnv/2023 star/2.7.11b
 
 STAR --runThreadN 6 \
 --runMode genomeGenerate \
@@ -65,7 +65,7 @@ STAR --runThreadN 6 \
 #SBATCH --error=STAR_map.%J.err
 #SBATCH --account=def-ben
 
-module load StdEnv/2020 star/2.7.9a
+module load StdEnv/2023 star/2.7.11b
 
 STAR --genomeDir /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/ \
 --runThreadN 6 \
@@ -98,6 +98,7 @@ https://subread.sourceforge.net/SubreadUsersGuide.pdf
 # sbatch 2022_STAR_count.sh inputbam output_counts
 
 module load StdEnv/2020 gcc/9.3.0 star/2.7.9a samtools subread/2.0.3
+module load StdEnv/2023 star/2.7.11b
 
 # must use -s 0 because the data are unstranded
 # must use -p because the data are paired
