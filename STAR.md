@@ -9,6 +9,7 @@ for Jade the directory would be something like this:
 cd /home/ben/projects/rrg-ben/froglady/
 mkdir XL_v10_refgenome
 cd XL_v10_refgenome
+gunzip XENLA_10.1_genome.fa.gz
 ```
 
 # Download the XL genome seq from xenbase
