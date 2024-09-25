@@ -2,6 +2,10 @@
 ```
 /home/ben/projects/rrg-ben/ben/2021_XL_ko_tad_RNAseq
 ```
+# Download the XL genome seq from xenbase
+```
+wget https://download.xenbase.org/xenbase/Genomics/JGI/Xenla10.1/XENLA_10.1_genome.fa.gz
+```
 
 # Index genome
 
