@@ -16,6 +16,13 @@ cd XL_v10_refgenome
 wget https://download.xenbase.org/xenbase/Genomics/JGI/Xenla10.1/XENLA_10.1_genome.fa.gz
 ```
 
+Now make a directory for your scripts
+```
+cd ..
+mkdir jade_scripts
+cd jade_scripts
+```
+
 # Index genome
 
 ```
