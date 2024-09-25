@@ -12,9 +12,10 @@ cd XL_v10_refgenome
 gunzip XENLA_10.1_genome.fa.gz
 ```
 
-# Download the XL genome seq from xenbase
+# Download the XL genome seq from xenbase and the gtf file
 ```
 wget https://download.xenbase.org/xenbase/Genomics/JGI/Xenla10.1/XENLA_10.1_genome.fa.gz
+wget https://download.xenbase.org/xenbase/Genomics/JGI/Xenla10.1/latest/XENLA_10.1_Xenbase.gtf.gz
 ```
 
 Now make a directory for your scripts
