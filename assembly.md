@@ -31,3 +31,7 @@ Trinity --seqType fq --samples_file ccdc_fastq_list.txt --CPU "${SLURM_CPUS_PER_
    --full_cleanup --max_memory 110G --min_kmer_cov 2 --bflyCalculateCPU \
    --include_supertranscripts --output ccdc_trinity_assembly_all_batches
 ```
+Or on info:
+```
+/usr/local/trinity/Trinity --seqType fq --max_memory 50G --left muel_all__trim_R1.fq  --right muel_all__trim_R2.fq --CPU 6
+```
