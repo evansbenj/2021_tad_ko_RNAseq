@@ -1,4 +1,5 @@
 # Kallisto DeSeq2 with permutations
+THis is an R script to do differential expression analysis using Kallisto counts and DeSeq2 in R.
 ```R
 ## RNA-seq analysis with DESeq2
 ## Adapted from Stephen Turner, @genetics_blog
