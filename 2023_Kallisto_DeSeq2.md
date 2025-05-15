@@ -1,4 +1,4 @@
-# kallisto DeSeq2 with permutations
+# Kallisto DeSeq2 with permutations
 ```R
 ## RNA-seq analysis with DESeq2
 ## Adapted from Stephen Turner, @genetics_blog
