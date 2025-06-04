@@ -177,5 +177,6 @@ close OUTFILE;
 
 Get the chromosomes from the gtf file:
 ```
-for i in `cat ./temp.out `; do grep -m 1 -i $i XENLA_10.1_GCF_XBmodels.gff3 | grep 'mRNA      ' >> tempp.out;done
+for i in `cat ./temp.out `; do grep -m 1 -i $i XENLA_10.1_GCF_XBmodels.gff3 >> tempp.out;done
 ```
+Then cat this into cut to get the chrs and gene names...
