@@ -174,3 +174,8 @@ for ($y = 0 ; $y < $counter ; $y++ ) {
 close DATAINPUT2;
 close OUTFILE;
 ```
+
+Get the chromosomes from the gtf file:
+```
+for i in `cat ./temp.out `; do grep -m 1 -i $i XENLA_10.1_GCF_XBmodels.gff3 | grep 'mRNA      ' >> tempp.out;done
+```
