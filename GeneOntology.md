@@ -81,10 +81,10 @@ seqtk subseq ../XL_v10_transcriptome/XENLA_10.1_GCF_XBmodels.transcripts.fa ccdc
 ```
 
 # Get best alignment of blast results (based on bit score)
-I am using dc-megablast, which is for somewhat similar sequences (here I am comparing human and frog protein coding).  I should also consider using `-task blastn` which allows for even more divergent matches.  The default is `-task megablast` which is for highly similar seqs.
+I am using blastn which allows for divergent matches. I could also use dc-megablast, which is for more similar sequences (here I am comparing human and frog protein coding).  The default is `-task megablast` which is for highly similar seqs.
 ```
 module load nixpkgs/16.09 gcc/7.3.0 blast+/2.10.1 
-blastn -task dc-megablast -query ccdc_kallisto_edgeR_sequence_file_output.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn
+blastn -task blastn -query ccdc_kallisto_edgeR_sequence_file_output.fasta -db ../human_transcriptome/gencode.v42.transcripts.fa_blastable -outfmt 6 | sort -k1,1 -k12,12nr -k11,11n | sort -u -k1,1 --merge > ccdc_kallisto_edgeR_de_to_human_best_single_hits.blastn
 ```
 # extract acronyms of successful queries
 ```
