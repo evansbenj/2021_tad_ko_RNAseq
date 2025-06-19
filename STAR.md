@@ -74,6 +74,7 @@ STAR --genomeDir /home/ben/projects/rrg-ben/ben/2021_XL_v10_refgenome/ \
 --outSAMtype BAM SortedByCoordinate \
 --outSAMunmapped Within \
 --outSAMattributes Standard \
+--alignEndsProtrude 10 \ # https://github.com/alexdobin/STAR/issues/1131
 --readFilesCommand zcat
 ```
 
